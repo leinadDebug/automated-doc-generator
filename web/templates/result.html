@@ -3,56 +3,384 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>{{ title }} - Documentation</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
     <style>
-        .doc-preview {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            max-height: 600px;
-            overflow-y: auto;
+        * {
+            box-sizing: border-box;
         }
+
+        body {
+            margin: 0;
+            background: #ffffff;
+            color: #1f2937;
+            font-family: "Inter", sans-serif;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* Soft gray top gradient */
+        .top-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 300px;
+            background: linear-gradient(
+                to bottom,
+                #f1f3f5 0%,
+                #f8f9fa 45%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            z-index: -1;
+        }
+
+        .page-wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 64px 24px 80px;
+        }
+
+        /* Header */
+        .page-header {
+            margin-bottom: 36px;
+        }
+
+        .eyebrow {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+
+        .page-header h1 {
+            margin: 0;
+            font-size: 32px;
+            line-height: 1.25;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: #111827;
+        }
+
+        .page-header p {
+            margin: 10px 0 0;
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+        .page-header strong {
+            color: #374151;
+            font-weight: 600;
+        }
+
+        /* Documentation container */
+        .documentation {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        .documentation-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 22px;
+            border-bottom: 1px solid #e5e7eb;
+            background: #fafafa;
+        }
+
+        .documentation-header h2 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #22c55e;
+        }
+
+        /* Markdown preview */
+        .doc-preview {
+            padding: 40px;
+            max-height: 700px;
+            overflow-y: auto;
+            color: #374151;
+        }
+
+        .doc-preview h1,
+        .doc-preview h2,
+        .doc-preview h3,
+        .doc-preview h4 {
+            color: #111827;
+            font-weight: 600;
+            line-height: 1.35;
+        }
+
+        .doc-preview h1 {
+            font-size: 28px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .doc-preview h2 {
+            font-size: 22px;
+            margin-top: 36px;
+            margin-bottom: 14px;
+        }
+
+        .doc-preview h3 {
+            font-size: 18px;
+            margin-top: 28px;
+            margin-bottom: 10px;
+        }
+
+        .doc-preview p {
+            margin-bottom: 16px;
+        }
+
+        .doc-preview ul,
+        .doc-preview ol {
+            padding-left: 24px;
+            margin-bottom: 18px;
+        }
+
+        .doc-preview li {
+            margin-bottom: 6px;
+        }
+
+        .doc-preview code {
+            background: #f3f4f6;
+            color: #374151;
+            padding: 2px 6px;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
         .doc-preview pre {
-            background: #fff;
-            padding: 12px;
-            border-radius: 6px;
+            background: #f8f9fa;
+            border: 1px solid #e5e7eb;
+            padding: 18px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .doc-preview pre code {
+            background: transparent;
+            padding: 0;
+            font-size: 13px;
+        }
+
+        .doc-preview blockquote {
+            border-left: 3px solid #d1d5db;
+            padding-left: 16px;
+            color: #6b7280;
+            margin: 20px 0;
+        }
+
+        .doc-preview table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .doc-preview th,
+        .doc-preview td {
+            border: 1px solid #e5e7eb;
+            padding: 10px 12px;
+            text-align: left;
+        }
+
+        .doc-preview th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        /* Download actions */
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .download-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-custom {
+            border: 1px solid #d1d5db;
+            background: #ffffff;
+            color: #374151;
+            padding: 9px 15px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.15s ease;
+        }
+
+        .btn-custom:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+            color: #111827;
+        }
+
+        .btn-primary-custom {
+            background: #111827;
+            border-color: #111827;
+            color: #ffffff;
+        }
+
+        .btn-primary-custom:hover {
+            background: #1f2937;
+            border-color: #1f2937;
+            color: #ffffff;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .page-wrapper {
+                padding: 40px 16px 60px;
+            }
+
+            .page-header h1 {
+                font-size: 26px;
+            }
+
+            .doc-preview {
+                padding: 24px;
+            }
+
+            .actions {
+                align-items: stretch;
+            }
+
+            .download-group {
+                width: 100%;
+            }
+
+            .btn-custom {
+                flex: 1;
+                text-align: center;
+            }
         }
     </style>
 </head>
+
 <body>
-    <div class="container mt-5">
-        <h1 class="text-center">📄 Generated Documentation</h1>
-        <p class="text-center text-muted">Your documentation for <strong>{{ title }}</strong> is ready.</p>
 
-        <div class="row justify-content-center">
-            <div class="col-md-10">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Preview</h5>
-                    </div>
-                    <div class="card-body doc-preview">
-                        {{ doc | safe }}
-                    </div>
-                </div>
+    <div class="top-gradient"></div>
 
-                <div class="mt-4 d-flex justify-content-center gap-3 flex-wrap">
-                    {% if format_choice in ['md', 'all'] %}
-                        <a href="/download/md" class="btn btn-success">Download Markdown (.md)</a>
-                    {% endif %}
-                    {% if format_choice in ['html', 'all'] %}
-                        <a href="/download/html" class="btn btn-success">Download HTML (.html)</a>
-                    {% endif %}
-                    {% if format_choice in ['json', 'all'] %}
-                        <a href="/download/json" class="btn btn-success">Download JSON (.json)</a>
-                    {% endif %}
-                </div>
-                <div class="mt-3 text-center">
-                    <a href="/" class="btn btn-secondary">Generate another</a>
+    <main class="page-wrapper">
+
+        <!-- Header -->
+        <header class="page-header">
+            <div class="eyebrow">Documentation Generator</div>
+
+            <h1>Generated Documentation</h1>
+
+            <p>
+                Documentation for
+                <strong>{{ title }}</strong>
+                is ready.
+            </p>
+        </header>
+
+        <!-- Documentation -->
+        <section class="documentation">
+
+            <div class="documentation-header">
+                <h2>Preview</h2>
+
+                <div class="status">
+                    <span class="status-dot"></span>
+                    Generated
                 </div>
             </div>
+
+            <div class="doc-preview">
+                {{ doc | safe }}
+            </div>
+
+        </section>
+
+        <!-- Actions -->
+        <div class="actions">
+
+            <div class="download-group">
+
+                {% if format_choice in ['md', 'all'] %}
+                    <a
+                        href="/download/md"
+                        class="btn-custom"
+                    >
+                        Download Markdown
+                    </a>
+                {% endif %}
+
+                {% if format_choice in ['html', 'all'] %}
+                    <a
+                        href="/download/html"
+                        class="btn-custom"
+                    >
+                        Download HTML
+                    </a>
+                {% endif %}
+
+                {% if format_choice in ['json', 'all'] %}
+                    <a
+                        href="/download/json"
+                        class="btn-custom"
+                    >
+                        Download JSON
+                    </a>
+                {% endif %}
+
+            </div>
+
+            <a
+                href="/"
+                class="btn-custom btn-primary-custom"
+            >
+                Generate another
+            </a>
+
         </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    </main>
+
 </body>
 </html>
